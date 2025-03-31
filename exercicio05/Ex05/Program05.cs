@@ -10,13 +10,23 @@
 
             Console.WriteLine("Digite a data atual: ");
             string dataAtual = Console.ReadLine();
+            
+            //----------------------------------------------
 
             DateTime hoje;
 
             // Validação da data
-            while (!DateTime.TryParse(dataAtual, out hoje))
+            while (!DateTime.TryParse(dataAtual, out hoje) || hoje > DateTime.Today)
             {
-                Console.WriteLine("Data inválida. Digite a data atual novamente (dd/MM/yyyy): ");
+                if (hoje > DateTime.Today)
+                {
+                    Console.WriteLine("Erro: A data informada não pode ser no futuro!");
+                }
+                else
+                {
+                    Console.WriteLine("Data inválida. Digite a data atual novamente (dd/MM/yyyy): ");
+                }
+
                 dataAtual = Console.ReadLine();
             }
 
@@ -26,7 +36,7 @@
             // Verifica se o curso já terminou
             if (hoje >= dataTermino)
             {
-                Console.WriteLine("Você já deve estar formado!");
+                Console.WriteLine("Parabéns! Você já deveria estar formado!");
             }
             else
             {
@@ -35,12 +45,16 @@
                 int meses = dataTermino.Month - hoje.Month;
                 int dias = dataTermino.Day - hoje.Day;
 
+                //----------------------------------------------
+
                 // Ajuste para quando o mês ou o dia forem menores que o esperado
                 if (meses < 0)
                 {
                     anos--;
                     meses += 12;
                 }
+
+                //----------------------------------------------
 
                 // Ajuste para quando o dia for menor que o esperado
                 if (dias < 0)
@@ -49,13 +63,17 @@
                     dias += DateTime.DaysInMonth(hoje.Year, hoje.Month); // Ajusta os dias
                 }
 
-                // Saída no console
-                Console.WriteLine($"Faltam {anos} ano(s), {meses} mes(es) e {dias} dia(s) para a conclusão do curso.");
+                //----------------------------------------------
 
-                // Verifica se falta menos de 6 meses para a formatura
+                // Verifica se falta menos de 6 meses para mensagem especial
                 if (anos == 0 && meses < 6)
                 {
-                    Console.WriteLine("Você está na reta final! Prepare-se para a formatura e grandes vivências!");
+                    Console.WriteLine($"Faltam {meses} mes(es) e {dias} dia(s) para a sua formatura!");
+                    Console.WriteLine("A reta final chegou! Prepare-se para a formatura!");
+                }
+                else
+                {
+                    Console.WriteLine($"Faltam {anos} ano(s), {meses} mes(es) e {dias} dia(s) para a conclusão do curso.");
                 }
             }
         }
