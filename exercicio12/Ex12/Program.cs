@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;  // Adicione essa linha para usar expressões regulares
+using System.Text.RegularExpressions;
 
 class Contato
 {
@@ -115,19 +115,20 @@ class Program
         Console.Write("Nome: ");
         nome = Console.ReadLine();
 
-        // Telefone com validação
+        // Telefone com validação (apenas números)
         telefone = "";
         while (true)
         {
-            Console.Write("Telefone (ex: (21) 99999-9999): ");
+            Console.Write("Telefone (somente números, ex: 21999999999): ");
             telefone = Console.ReadLine();
             if (ValidarTelefone(telefone))
             {
+                telefone = FormatTelefone(telefone); // Formatar telefone
                 break;
             }
             else
             {
-                Console.WriteLine("Telefone inválido! Certifique-se de seguir o formato (XX) XXXXX-XXXX.");
+                Console.WriteLine("Telefone inválido! Certifique-se de digitar somente números (ex: 21999999999).");
             }
         }
 
@@ -166,9 +167,9 @@ class Program
         Console.Clear();
         Console.WriteLine("Escolha o formato de exibição:");
 
-        Console.WriteLine("1. Markdown");
-        Console.WriteLine("2. Tabela");
-        Console.WriteLine("3. Texto Puro");
+        Console.WriteLine("1. Exibir em formato Markdown");
+        Console.WriteLine("2. Exibir em formato Tabela");
+        Console.WriteLine("3. Exibir em formato Texto Puro");
 
         Console.Write("Escolha uma opção: ");
         var formato = Console.ReadLine();
@@ -200,9 +201,14 @@ class Program
 
     static bool ValidarTelefone(string telefone)
     {
-        // Expressão regular para validar o telefone no formato (XX) XXXXX-XXXX ou (XX) XXXX-XXXX
-        var regex = new Regex(@"^\(\d{2}\) \d{4,5}-\d{4}$");
-        return regex.IsMatch(telefone);
+        // Verifica se o telefone contém somente números
+        return telefone.All(char.IsDigit) && telefone.Length >= 10 && telefone.Length <= 11;
+    }
+
+    static string FormatTelefone(string telefone)
+    {
+        // Formata o telefone no formato (XX) XXXXX-XXXX
+        return string.Format("({0}) {1}-{2}", telefone.Substring(0, 2), telefone.Substring(2, 5), telefone.Substring(7, 4));
     }
 
     static bool ValidarEmail(string email)
