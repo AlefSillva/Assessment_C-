@@ -1,0 +1,5 @@
+Notebook,2,4500
+Mouse,10,75
+Headphone,12,150
+Monitor,6,650
+Mousepad,12,35
